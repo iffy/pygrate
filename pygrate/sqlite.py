@@ -9,6 +9,8 @@ def dataType(general_type):
     return {
         'int': 'integer',
         'integer': 'integer',
+        'rawstr': 'blob',
+        'text': 'text',
     }[general_type]
 
 
@@ -38,7 +40,10 @@ class CreateTable(object):
         c = db.cursor()
         columns = []
         for column in self.original.columns:
-            columns.append('%s %s' % (column.name, dataType(column.datatype)))
+            if column.autoincrement:
+                columns.append('%s integer primary key' % (column.name,))
+            else:
+                columns.append('%s %s' % (column.name, dataType(column.datatype)))
         sql = 'CREATE TABLE %(name)s (%(columns)s)' % {
             'name': self.original.name,
             'columns': ', '.join(columns),

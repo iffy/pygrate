@@ -7,6 +7,8 @@ class Column(object):
     :ivar datatype: SQL data type
     """
     
-    def __init__(self, name, datatype):
+    def __init__(self, name, datatype, primary=False, autoincrement=False):
         self.name = name
         self.datatype = datatype
+        self.primary = primary
+        self.autoincrement = autoincrement

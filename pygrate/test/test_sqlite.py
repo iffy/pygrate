@@ -21,6 +21,14 @@ class dataTypeTest(TestCase):
         self.assertEqual(dataType('integer'), 'integer')
 
 
+    def test_text(self):
+        self.assertEqual(dataType('text'), 'text')
+
+
+    def test_blob(self):
+        self.assertEqual(dataType('rawstr'), 'blob')
+
+
 
 
 class CreateTableTest(TestCase):
@@ -48,6 +56,28 @@ class CreateTableTest(TestCase):
         rows = c.fetchall()
         self.assertEqual(rows, [
             (1, 2),
+        ])
+
+
+    def test_autoincrement(self):
+        """
+        A single autoincrementing integer should work
+        """
+        s = ISqliteAction(action.CreateTable('foo', [
+            Column('a', 'integer', primary=True, autoincrement=True),
+        ]))
+        
+        db = sqlite.connect(':memory:')
+        s.run(db)
+        
+        c = db.cursor()
+        c.execute('insert into foo default values')
+        c.execute('insert into foo default values')
+        c.execute('select * from foo order by a')
+        rows = c.fetchall()
+        self.assertEqual(rows, [
+            (1,),
+            (2,),
         ])
 
 
