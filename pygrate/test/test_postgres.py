@@ -73,7 +73,9 @@ class CreateTableTest(TestCase):
             Column('b', 'integer'),
         ]))
         
-        db = sqlite.connect(':memory:')
+        db = connect()
+        self.addCleanup(db.close)
+
         s.run(db)
         
         c = db.cursor()
@@ -93,7 +95,9 @@ class CreateTableTest(TestCase):
             Column('a', 'integer', primary=True, autoincrement=True),
         ]))
         
-        db = sqlite.connect(':memory:')
+        db = connect()
+        self.addCleanup(db.close)
+
         s.run(db)
         
         c = db.cursor()
