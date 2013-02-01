@@ -19,7 +19,7 @@ except ImportError:
 
 connkw = {}
 def connect():
-    return psycopg2.connect(connkw)
+    return psycopg2.connect(**connkw)
 
 
 if os.environ.get('PG_DB', ''):
