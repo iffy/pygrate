@@ -1,0 +1,15 @@
+language: python
+python:
+    - "2.6"
+    - "2.7"
+
+services: postgresql
+install: "pip install -r requirements.txt --use-mirrors"
+
+env:
+    - PG_DB="postgres://postgres@127.0.0.1:5432/pygrate_test"
+
+before_script:
+    - psql -c 'create database pygrate_test;' -U postgres
+
+script: trial pygrate
